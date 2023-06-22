@@ -21,52 +21,54 @@ import com.edreamz.fileupload.serviceimpl.FileServiceImplementation;
 @Controller
 public class FileController {
 
-    @Autowired
-    FileServiceImplementation fileServiceImplementation;
- 
-    // @GetMapping annotation for
-    // mapping HTTP GET requests onto
-    // specific handler methods. */
-    @GetMapping("/")
-    public String getData(){
-        return "File";
-    }
-   
-    // @PostMapping annotation maps HTTP POST
-    // requests onto specific handler methods
-    @PostMapping("/")
-    public String uploadMultipartFile(@RequestParam("files") MultipartFile[] files, Model modal,@RequestParam(defaultValue = "1") Integer page) {
-    try {
-        
-        List<FileModal> fileList = new ArrayList<FileModal>();
-        for (MultipartFile file : files) {
-            String fileContentType = file.getContentType();
-            String sourceFileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
-            String fileName = file.getOriginalFilename();
-            FileModal fileModal = new FileModal(fileName, sourceFileContent, fileContentType);
-             
-            // Adding file into fileList
-            fileList.add(fileModal);
-            }
-       
-            // Saving all the list item into database
-            fileServiceImplementation.saveAllFilesList(fileList);
- 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-       
-        // Send file list to View using modal class   
-        // fileServiceImplementation.getAllFiles() used to
-        // fetch all file list from DB
-        modal.addAttribute("allFiles", fileServiceImplementation.getAllFiles(5,page));
-       
-        return "FileList";
-    }
+	@Autowired
+	FileServiceImplementation fileServiceImplementation;
+
+	// @GetMapping annotation for
+	// mapping HTTP GET requests onto
+	// specific handler methods. */
+	@GetMapping("/")
+	public String getData() {
+		return "File";
+	}
+
+	// @PostMapping annotation maps HTTP POST
+	// requests onto specific handler methods
+	@PostMapping("/")
+	public String uploadMultipartFile(@RequestParam("files") MultipartFile[] files, Model modal,
+			@RequestParam(defaultValue = "1") Integer page) {
+		try {
+
+			List<FileModal> fileList = new ArrayList<FileModal>();
+			for (MultipartFile file : files) {
+				String fileContentType = file.getContentType();
+				String sourceFileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
+				String fileName = file.getOriginalFilename();
+				FileModal fileModal = new FileModal(fileName, sourceFileContent, fileContentType);
+
+				// Adding file into fileList
+				fileList.add(fileModal);
+			}
+
+			// Saving all the list item into database
+			fileServiceImplementation.saveAllFilesList(fileList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int total = 5;
+		if (page == 1) {
+		} else {
+			page = (page - 1) * total + 1;
+		}
+		modal.addAttribute("allFiles", fileServiceImplementation.getAllFiles(total, page));
+
+		return "FileList";
+	}
 
 	@GetMapping("/delete")
-	public String deleteContact(@RequestParam("fileid") Long id,Model model)
-	{
+	public String deleteContact(@RequestParam("fileid") Long id, Model model) {
 		fileServiceImplementation.delete(id);
 		return "redirect:/";
 	}
