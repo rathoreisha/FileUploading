@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>All files</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/
+	4.1.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/
+		jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/
+		umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/
+		bootstrap.min.js">
+		</script>
+		<script>
+function confirmDelete()
+{
+	return confirm("Are u sure you want to delete?");
+	}
+</script>
+</head>
+<style>
+	.button {
+     
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 45%;   
+    cursor: pointer;
+}
+ 
+.button4 {
+    border-radius: 10px;
+}
+.pagination {
+    position: relative;
+  }
+ 
+  /* pagination styling */
+  .pagination a {
+    color: black;
+    padding: 10px 18px;
+    text-decoration: none;
+  }
+ 
+  /* pagination hover effect on non-active */
+  .pagination_section a:hover:not(.active) {
+    background-color: #031F3B;
+    color: white;
+  }
+ 
+  /* pagination hover effect on active*/
+
+  .content {
+    margin: 50px;
+    padding: 15px;
+    width: 700px;
+    height: 200px;
+    border: 2px solid black;
+  }
+</style>
+
+<body>
+	<div class="container h-100">
+	<div class="row h-100 justify-content-center align-items-center">
+	<div class="col-md-7 table-responsive">
+	<h2>Uploaded Files</h2>
+	<table id="customerTable" class="table">
+	<thead>
+			<tr>
+				<th>File Name</th>
+				
+			</tr>
+	</thead>
+	<tbody>
+			<tr th:each="file: ${allFiles}">
+				<td th:text="${file.fileName}"></td>
+				
+				<td><a href="/delete?id=${allFiles.fileid}" onclick="return confirmDelete()" class="button button4">Delete</a></td>
+
+			</tr>
+		<div>
+		
+	</div>	
+	</tbody>
+	</table>
+	
+	<nav aria-label="Page navigation example">
+  <ul class="pagination">
+   
+    <li class="page-item"><a class="page-link" href="1">1</a></li>
+    <li class="page-item"><a class="page-link" href="2">2</a></li>
+    <li class="page-item"><a class="page-link" href="/3">3</a></li>
+    
+  </ul>
+</nav>
+ 
+	<div>
+		<a href="/" class="btn btn-light btn-block"
+		role="button">Back to Upload Form</a>
+	</div>
+	</div>
+	</div>
+	</div>
+</body>
+</html>
